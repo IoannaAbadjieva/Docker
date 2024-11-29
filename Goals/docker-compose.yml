@@ -1,0 +1,38 @@
+services:
+  mongodb:
+    image: mongo
+    env_file:
+      - ./env/mongo.env
+    volumes:
+      - data:/data/db
+    networks:
+      - goals
+
+  backend:
+    build: ./backend
+    env_file:
+      - ./env/backend.env
+    ports:
+      - "80:80"
+    volumes:
+      - logs:/logs
+      - /backend/node_modules
+    networks:
+      - goals
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/backend/src
+    networks:
+      - goals
+
+volumes:
+  data:
+  logs:
+
+networks:
+  goals:
+
